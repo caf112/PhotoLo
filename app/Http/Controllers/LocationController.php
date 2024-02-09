@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LocationController extends Controller
 {
@@ -49,7 +50,6 @@ class LocationController extends Controller
         $location->title = $request->title;
         $location->latitude = $request->latitude;
         $location->longitude = $request->longitude;
-        // $location->images_path = $request->images_path;
         $imagesPath = $request->file('images_path')->store('images', 'public');
         \Illuminate\Support\Facades\Log::info($imagesPath);
         $location->images_path = $imagesPath;
@@ -67,7 +67,8 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        $data = ['location' => $location];
+        $imageUrl = Storage::url($location->images_path);
+        $data = ['location' => $location,'imageUrl'=>$imageUrl];
         return view('locations.show', $data);
     }
 

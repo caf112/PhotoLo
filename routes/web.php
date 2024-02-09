@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BookmarkController;
+use Illuminate\Support\Facades\Storage;
 
 
 /*
