@@ -31,7 +31,9 @@
     </header>
     <main class="container">
         @yield('content')
-
+        <!-- @if(session()->has('absoluteImagePath'))
+        <p>画像の絶対パス: {{ session('absoluteImagePath') }}</p>
+        @endif -->
     </main>
     <footer>
         &copy; PhotoLocation

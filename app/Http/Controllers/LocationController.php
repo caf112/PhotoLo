@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class LocationController extends Controller
 {
@@ -50,13 +51,15 @@ class LocationController extends Controller
         $location->title = $request->title;
         $location->latitude = $request->latitude;
         $location->longitude = $request->longitude;
-        $imagesPath = $request->file('images_path')->store('images', 'public');
-        \Illuminate\Support\Facades\Log::info($imagesPath);
+        $imagesPath = $request->file('images_path')->store('', 'public');
         $location->images_path = $imagesPath;
         $location->body = $request->body;
         $location->save();
 
+        // $absoluteImagePath = storage_path('app/public' . $imagesPath);
+
         return redirect(route('locations.index'));
+        // ->with('absoluteImagePath',$absoluteImagePath)->with('path',$path)
     }
 
     /**
@@ -67,9 +70,11 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        $imageUrl = Storage::url($location->images_path);
-        $data = ['location' => $location,'imageUrl'=>$imageUrl];
-        return view('locations.show', $data);
+        $imagePath = Storage::url($location->images_path);
+        $data = ['location' => $location, 'imagePath' => $imagePath];
+        $path = base_path('storage/app');
+
+        return view('locations.show', $data)->with('path',$path);
     }
 
     /**
@@ -103,7 +108,7 @@ class LocationController extends Controller
         $location->title = $request->title;
         $location->latitude = $request->latitude;
         $location->longitude = $request->longitude;
-        $imagesPath = $request->file('images_path')->store('images', 'public');
+        $imagesPath = $request->file('images_path')->store('public');
         $location->images_path = $imagesPath;
         $location->body = $request->body;
         $location->save();
